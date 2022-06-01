@@ -5,8 +5,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // tasks: [{title: "task1", isChecked: false}, {title: "task2", isChecked: true}]
       tasks: this.getStoredTasks(),
-      isChecked: false,
       taskValue: ''
     }
   }
@@ -30,7 +30,7 @@ class App extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     let arr = this.state.tasks;
-    const newTask = {title:this.state.taskValue, checked: false};
+    const newTask = {title:this.state.taskValue, isChecked: false};
     arr.push(newTask);
     this.setState({ tasks: arr });
 
@@ -49,14 +49,24 @@ class App extends React.Component {
     //(2) "JSON.stringify": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
     localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
-  toggleChange =() =>{
+
+  toggleChange =(event,index) =>{
+    let tasks = this.state.tasks;
+    tasks[index].isChecked = event.target.checked;
     this.setState({
-      isChecked: !this.state.isChecked
-    })
+      tasks: tasks
+    });
+    if(event.target.checked){
+      document.getElementById("para-"+index).setAttribute("class","checked");
+    }else{
+      document.getElementById("para-"+index).removeAttribute("class","checked");
+    }
+    localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
-  handleChecked =() =>{
-    document.getElementById("para").setAttribute("class","checked");
-  }
+  
+  // handleChecked =(index) =>{
+  //   document.getElementById("para-"+index).setAttribute("class","checked");
+  // }
 
   render() {
     return (
@@ -69,8 +79,8 @@ class App extends React.Component {
         <div className="lists" >
           {this.state.tasks.map((element, index) =>
             <div className="listItem" key={index}>
-              <input type="checkbox" defaultChecked={this.state.isChecked} onChange={this.toggleChange} onClick={this.handleChecked}/>
-              <p id="para"> {element.title}</p>
+              <input key={index} type="checkbox" defaultChecked={element.isChecked} onChange={(event) => this.toggleChange(event, index)}/>
+              <p id={'para-'+index}> {element.title}</p>
               <div>
                 <button className="btnEdit" >edit</button>
                 <button className="btnDelete" onClick={() => this.deleteItem(index)} >delete</button>

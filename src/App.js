@@ -6,9 +6,11 @@ class App extends React.Component {
     super(props);
     this.state = {
       tasks: this.getStoredTasks(),
+      isChecked: false,
       taskValue: ''
     }
   }
+  
 
   //this function to get stored tasks from localStorage
   getStoredTasks = () => {
@@ -47,6 +49,14 @@ class App extends React.Component {
     //(2) "JSON.stringify": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
     localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
+  toggleChange =() =>{
+    this.setState({
+      isChecked: !this.state.isChecked
+    })
+  }
+  handleChecked =() =>{
+    document.getElementById("para").setAttribute("class","checked");
+  }
 
   render() {
     return (
@@ -59,7 +69,8 @@ class App extends React.Component {
         <div className="lists" >
           {this.state.tasks.map((element, index) =>
             <div className="listItem" key={index}>
-              <p> {element.title}</p>
+              <input type="checkbox" defaultChecked={this.state.isChecked} onChange={this.toggleChange} onClick={this.handleChecked}/>
+              <p id="para"> {element.title}</p>
               <div>
                 <button className="btnEdit" >edit</button>
                 <button className="btnDelete" onClick={() => this.deleteItem(index)} >delete</button>

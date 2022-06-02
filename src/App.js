@@ -6,10 +6,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // tasks: [{title: "task1", isChecked: false}, {title: "task2", isChecked: true}]
       tasks: this.getStoredTasks(),
       taskValue: ''
     }
   }
+  
 
   //this function to get stored tasks from localStorage
   getStoredTasks = () => {
@@ -29,8 +31,13 @@ class App extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     let arr = this.state.tasks;
+
+    const newTask = {title:this.state.taskValue, isChecked: false};
+//     arr.push(newTask);
+//     this.setState({ tasks: arr });
+=======
     let arrTitle = [];
-    const newTask = {title:this.state.taskValue, isChecked:false};
+//     const newTask = {title:this.state.taskValue, isChecked:false};
 
     if(newTask.title) {
       if (arr.length > 0) {
@@ -87,16 +94,23 @@ class App extends React.Component {
     localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
 
-  toggleChange = (index) =>{
-    let arr = this.state.tasks
-    arr[index].isChecked = !arr[index].isChecked
-    this.setState({ tasks: arr })
-    console.log(arr);
+  toggleChange =(event,index) =>{
+    let tasks = this.state.tasks;
+    tasks[index].isChecked = event.target.checked;
+    this.setState({
+      tasks: tasks
+    });
+    if(event.target.checked){
+      document.getElementById("para-"+index).setAttribute("class","checked");
+    }else{
+      document.getElementById("para-"+index).removeAttribute("class","checked");
+    }
     localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
-  handleChecked =() =>{
-    document.getElementById("para").setAttribute("class","checked");
-  }
+  
+  // handleChecked =(index) =>{
+  //   document.getElementById("para-"+index).setAttribute("class","checked");
+  // }
 
   render() {
     return (
@@ -106,19 +120,19 @@ class App extends React.Component {
             <button className="btnHead" > add </button>
           </form>
 
-          <div className="lists" >
-            {this.state.tasks.map((element, index) =>
-                <div className="listItem" key={index}>
-                  <input type="checkbox" checked={element.isChecked}  onChange={() => this.toggleChange(index)} onClick={this.handleChecked}/>
-                  <p id="para"> {element.title}</p>
-                  <div>
-                    <button className="btnEdit" >edit</button>
-                    <button className="btnDelete" onClick={() => this.deleteItem(index)} >delete</button>
-                  </div>
-                </div>
-            )}
-          </div>
-        </section>
+        <div className="lists" >
+          {this.state.tasks.map((element, index) =>
+            <div className="listItem" key={index}>
+              <input key={index} type="checkbox" defaultChecked={element.isChecked} onChange={(event) => this.toggleChange(event, index)}/>
+              <p id={'para-'+index}> {element.title}</p>
+              <div>
+                <button className="btnEdit" >edit</button>
+                <button className="btnDelete" onClick={() => this.deleteItem(index)} >delete</button>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
     )
   }
 }

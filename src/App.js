@@ -2,7 +2,7 @@ import React from "react";
 import './App.css'
 import Toast from "sweetalert2";
 
-class App extends React.Component {
+class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -10,8 +10,8 @@ class App extends React.Component {
       tasks: this.getStoredTasks(),
       taskValue: ''
     }
+
   }
-  
 
   //this function to get stored tasks from localStorage
   getStoredTasks = () => {
@@ -33,10 +33,7 @@ class App extends React.Component {
     let arr = this.state.tasks;
 
     const newTask = {title:this.state.taskValue, isChecked: false};
-//     arr.push(newTask);
-//     this.setState({ tasks: arr });
     let arrTitle = [];
-//     const newTask = {title:this.state.taskValue, isChecked:false};
 
     if(newTask.title) {
       if (arr.length > 0) {
@@ -99,17 +96,13 @@ class App extends React.Component {
     this.setState({
       tasks: tasks
     });
-    if(event.target.checked){
-      document.getElementById("para-"+index).setAttribute("class","checked");
-    }else{
-      document.getElementById("para-"+index).removeAttribute("class","checked");
-    }
+    // if(event.target.checked){
+    //   document.getElementById("para-"+index).setAttribute("class","checked");
+    // }else{
+    //   document.getElementById("para-"+index).removeAttribute("class","checked");
+    // }
     localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
-  
-  // handleChecked =(index) =>{
-  //   document.getElementById("para-"+index).setAttribute("class","checked");
-  // }
 
   render() {
     return (
@@ -123,7 +116,7 @@ class App extends React.Component {
           {this.state.tasks.map((element, index) =>
             <div className="listItem" key={index}>
               <input key={index} type="checkbox" defaultChecked={element.isChecked} onChange={(event) => this.toggleChange(event, index)}/>
-              <p id={'para-'+index}> {element.title}</p>
+              <p id={'para-'+index} className={element.isChecked ? "checked" : ""}> {element.title}</p>
               <div>
                 <button className="btnEdit" >edit</button>
                 <button className="btnDelete" onClick={() => this.deleteItem(index)} >delete</button>

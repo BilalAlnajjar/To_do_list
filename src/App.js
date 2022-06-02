@@ -35,7 +35,7 @@ class App extends React.Component {
     const newTask = {title:this.state.taskValue, isChecked: false};
 //     arr.push(newTask);
 //     this.setState({ tasks: arr });
-=======
+
     let arrTitle = [];
 //     const newTask = {title:this.state.taskValue, isChecked:false};
 

@@ -35,7 +35,6 @@ class App extends React.Component {
     const newTask = {title:this.state.taskValue, isChecked: false};
 //     arr.push(newTask);
 //     this.setState({ tasks: arr });
-=======
     let arrTitle = [];
 //     const newTask = {title:this.state.taskValue, isChecked:false};
 
@@ -46,7 +45,7 @@ class App extends React.Component {
         })
         if (!arrTitle.includes(newTask.title)) {
           arr.push(newTask)
-          this.setState({tasks: arr});
+          this.setState({tasks: arr, taskValue: ""});
           Toast.fire({
             icon: 'success',
             title: 'Task created successfully'
@@ -61,7 +60,7 @@ class App extends React.Component {
 
       } else {
         arr.push(newTask)
-        this.setState({tasks: arr});
+        this.setState({tasks: arr, taskValue: ""});
         Toast.fire({
           icon: 'success',
           title: 'Task created successfully'
@@ -116,7 +115,7 @@ class App extends React.Component {
     return (
         <section className="container">
           <form className="head" onSubmit={this.handleSubmit}>
-            <input type="text" placeholder="enter you task" className="inpHead" onChange={this.handleChange} />
+            <input type="text" value={this.state.taskValue} placeholder="enter you task" className="inpHead" onChange={this.handleChange} />
             <button className="btnHead" > add </button>
           </form>
 

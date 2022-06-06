@@ -37,8 +37,8 @@ class App extends React.Component{
 
     if(newTask.title) {
       if (arr.length > 0) {
-       this.state.tasks.map((element,index) => {
-          arrTitle.push(element.title)
+        arrTitle = this.state.tasks.map((element) => {
+          return element.title;
         })
         if (!arrTitle.includes(newTask.title)) {
           arr.push(newTask)
@@ -70,19 +70,15 @@ class App extends React.Component{
       })
     }
 
-      //store new tasks value in the localStorage by convert the array to a JSON string to enable get a transformable value in the next time
-      //(1) "store array in localStorage": https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
-      //(2) "JSON.stringify": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-      localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
+    //store new tasks value in the localStorage by convert the array to a JSON string to enable get a transformable value in the next time 
+    //(1) "store array in localStorage": https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
+    //(2) "JSON.stringify": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+    localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
 
   deleteItem = (i) => {
-    console.log(i)
-    console.log(this.state.tasks[i])
     const filterArr = this.state.tasks.filter((element, index) => index !== i);
-    console.log(filterArr)
     this.setState({ tasks: filterArr });
-    console.log(this.state.tasks)
 
     //store new tasks value in the localStorage by convert the array to a JSON string to enable get a transformable value in the next time 
     //(1) "store array in localStorage": https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
@@ -96,11 +92,10 @@ class App extends React.Component{
     this.setState({
       tasks: tasks
     });
-    // if(event.target.checked){
-    //   document.getElementById("para-"+index).setAttribute("class","checked");
-    // }else{
-    //   document.getElementById("para-"+index).removeAttribute("class","checked");
-    // }
+
+    //store new tasks value in the localStorage by convert the array to a JSON string to enable get a transformable value in the next time 
+    //(1) "store array in localStorage": https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
+    //(2) "JSON.stringify": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
     localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
 

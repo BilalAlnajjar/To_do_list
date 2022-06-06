@@ -1,6 +1,7 @@
 import React from "react";
 import './App.css'
 import Toast from "sweetalert2";
+import ListItem from "./components/ListItem.component";
 
 class App extends React.Component{
   constructor(props) {
@@ -69,21 +70,11 @@ class App extends React.Component{
         title: 'The task input is empty'
       })
     }
-
-    //store new tasks value in the localStorage by convert the array to a JSON string to enable get a transformable value in the next time 
-    //(1) "store array in localStorage": https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
-    //(2) "JSON.stringify": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-    localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
 
   deleteItem = (i) => {
     const filterArr = this.state.tasks.filter((element, index) => index !== i);
     this.setState({ tasks: filterArr });
-
-    //store new tasks value in the localStorage by convert the array to a JSON string to enable get a transformable value in the next time 
-    //(1) "store array in localStorage": https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
-    //(2) "JSON.stringify": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-    localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
   }
 
   toggleChange =(event,index) =>{
@@ -92,14 +83,26 @@ class App extends React.Component{
     this.setState({
       tasks: tasks
     });
+  }
+  
+  handleEdit = (index, value) => {
+    const newTasks = this.state.tasks.map((ele,i) => {
+      if(index == i){
+        return {...ele, title: value};
+      }
+      return ele;
+    });
+    this.setState({
+      tasks: newTasks
+    });
+  }
 
+  render() {
     //store new tasks value in the localStorage by convert the array to a JSON string to enable get a transformable value in the next time 
     //(1) "store array in localStorage": https://stackoverflow.com/questions/3357553/how-do-i-store-an-array-in-localstorage
     //(2) "JSON.stringify": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
     localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
-  }
 
-  render() {
     return (
         <section className="container">
           <form className="head" onSubmit={this.handleSubmit}>
@@ -107,18 +110,11 @@ class App extends React.Component{
             <button className="btnHead" > add </button>
           </form>
 
-        <div className="lists" >
-          {this.state.tasks.map((element, index) =>
-            <div className="listItem" key={index}>
-              <input key={index} type="checkbox" defaultChecked={element.isChecked} onChange={(event) => this.toggleChange(event, index)}/>
-              <p id={'para-'+index} className={element.isChecked ? "checked" : ""}> {element.title}</p>
-              <div>
-                <button className="btnEdit" >edit</button>
-                <button className="btnDelete" onClick={() => this.deleteItem(index)} >delete</button>
-              </div>
-            </div>
-          )}
-        </div>
+          <div className="lists" >
+            {this.state.tasks.map((element, index) =>
+              <ListItem key={index} element={element} index={index} toggleChange={this.toggleChange} deleteItem={this.deleteItem} handleEdit={this.handleEdit}/>
+            )}
+          </div>
       </section>
     )
   }
